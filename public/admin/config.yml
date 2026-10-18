@@ -1,0 +1,198 @@
+# =============================================================================
+#  BabyRiiri Studio — admin panel (Decap CMS)
+# =============================================================================
+#  LOGIN: GitHub. Only people with WRITE access to the repo can sign in and save.
+#  Visitors to the public app have no way to reach, use or bypass this: the
+#  catalogue is plain files in the repo, and only an authenticated commit can
+#  change them. Saving here commits to GitHub -> Netlify rebuilds -> it's live.
+# =============================================================================
+backend:
+  name: github
+  repo: thyrealmatty/riiris-studio   # <- your GitHub repo
+  branch: main                       # <- the branch Netlify deploys
+
+local_backend: true                  # only active when running `npx decap-server` locally
+publish_mode: simple                 # save = publish (commit straight to the branch)
+site_url: /
+display_url: /
+logo_url: /icons/icon-192.png
+locale: en
+
+# Fallback uploads (each field below sets its own folder)
+media_folder: public/images
+public_folder: /images
+
+collections:
+  # ---------------------------------------------------------------- SONGS ----
+  - name: songs
+    label: Songs
+    label_singular: Song
+    description: "Add a song: fill in the details, drop in the audio file, press Publish."
+    folder: content/songs
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}}"
+    sortable_fields: ["title", "releaseDate"]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Artist, name: artist, widget: string, default: BabyRiiri }
+      - label: Featured artists
+        name: featuredArtists
+        widget: list
+        required: false
+        hint: "Only add names you've confirmed."
+        field: { label: Name, name: name, widget: string }
+      - label: Audio file
+        name: audioSrc
+        widget: file
+        required: false
+        media_folder: /public/audio
+        public_folder: /audio
+        hint: "Drop in an .mp3 (or .m4a). Leave empty and the song shows as 'Coming soon'."
+      - label: Artwork
+        name: artwork
+        widget: image
+        required: false
+        media_folder: /public/images/songs
+        public_folder: /images/songs
+        hint: "Square image, at least 600×600. Leave empty to use the generated artwork."
+      - label: Album
+        name: album
+        widget: relation
+        collection: albums
+        search_fields: ["title"]
+        value_field: "{{slug}}"
+        display_fields: ["title"]
+        required: false
+      - { label: Track number, name: trackNumber, widget: number, value_type: int, min: 1, required: false }
+      - { label: Genre, name: genre, widget: string, required: false }
+      - label: Release date
+        name: releaseDate
+        widget: datetime
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        format: "YYYY-MM-DD"
+        required: false
+        hint: "Leave empty if unknown — nothing is made up."
+      - { label: Length in seconds (optional), name: duration, widget: number, value_type: int, min: 1, required: false }
+      - { label: About this song, name: description, widget: text, required: false }
+      - { label: Feature on the homepage, name: featured, widget: boolean, default: false }
+      - { label: Show as New Release, name: newRelease, widget: boolean, default: false }
+      - { label: Show as Trending, name: trending, widget: boolean, default: false }
+      - { label: Added, name: addedAt, widget: hidden, default: "{{now}}" }
+
+  # --------------------------------------------------------------- ALBUMS ----
+  - name: albums
+    label: Albums
+    label_singular: Album
+    description: "Songs join an album from the Song editor (pick the album there)."
+    folder: content/albums
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Artist, name: artist, widget: string, default: BabyRiiri }
+      - label: Artwork
+        name: artwork
+        widget: image
+        required: false
+        media_folder: /public/images/albums
+        public_folder: /images/albums
+      - { label: Release year, name: releaseYear, widget: string, required: false }
+      - { label: Description, name: description, widget: text, required: false }
+
+  # ------------------------------------------------------------ PLAYLISTS ----
+  - name: playlists
+    label: Playlists
+    label_singular: Playlist
+    folder: content/playlists
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Description, name: description, widget: text, required: false }
+      - label: Artwork
+        name: artwork
+        widget: image
+        required: false
+        media_folder: /public/images/playlists
+        public_folder: /images/playlists
+      - label: Songs (in order)
+        name: songs
+        widget: relation
+        collection: songs
+        search_fields: ["title"]
+        value_field: "{{slug}}"
+        display_fields: ["title"]
+        multiple: true
+        required: false
+
+  # -------------------------------------------------------- ANNOUNCEMENTS ----
+  - name: announcements
+    label: Homepage Announcements
+    label_singular: Announcement
+    folder: content/announcements
+    extension: json
+    format: json
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    summary: "{{title}}"
+    description: "Delete an announcement to take it off the homepage."
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Message, name: body, widget: text }
+      - { label: Tag, name: tag, widget: select, options: ["NEW", "FEATURED", "TRENDING", "PLAYING"], default: "NEW" }
+      - { label: Date, name: date, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", required: false }
+
+  # --------------------------------------------------------------- ARTIST ----
+  - name: artist
+    label: Artist Profile
+    files:
+      - name: artist
+        label: BabyRiiri
+        file: content/artist.json
+        format: json
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Tagline, name: tagline, widget: string, required: false }
+          - { label: Bio, name: bio, widget: text }
+          - { label: Hometown, name: hometown, widget: string, required: false }
+          - label: Profile photo
+            name: profileImage
+            widget: image
+            required: false
+            media_folder: /public/images/artist
+            public_folder: /images/artist
+          - label: Banner image
+            name: heroImage
+            widget: image
+            required: false
+            media_folder: /public/images/artist
+            public_folder: /images/artist
+          - { label: Badge, name: badge, widget: select, options: ["", "NEW", "FEATURED", "TRENDING"], default: "", required: false }
+          - label: Genres
+            name: genres
+            widget: list
+            required: false
+            field: { label: Genre, name: genre, widget: string }
+          - label: Social links
+            name: socials
+            widget: object
+            fields:
+              - { label: Instagram URL, name: instagram, widget: string, required: false }
+              - { label: YouTube URL, name: youtube, widget: string, required: false }
+              - { label: Linktree URL, name: linktree, widget: string, required: false }
+              - { label: Facebook URL, name: facebook, widget: string, required: false }
+              - { label: X (Twitter) URL, name: x, widget: string, required: false }
