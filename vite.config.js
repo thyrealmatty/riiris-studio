@@ -13,9 +13,10 @@ export default defineConfig({
       manifest: false, // we ship our own public/manifest.json
       devOptions: { enabled: false },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,jpg,jpeg,webp,woff2}'],
-        // The admin panel is a separate, login-gated app — never precache or intercept it.
-        globIgnores: ['admin/**'],
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globIgnores: ['admin/**', 'images/**', 'audio/**'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/admin/, /^\/\.netlify/, /^\/api/],
         cleanupOutdatedCaches: true,
