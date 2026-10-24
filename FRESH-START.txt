@@ -1,0 +1,31 @@
+FRESH START — REPLACE YOUR CURRENT BABYRIIRI SITE WITH THIS ONE
+(Your Netlify site, URL and admin login stay exactly the same.)
+
+STEP 1 — SAVE YOUR CONTENT (so you don't lose songs)
+  In your OLD project folder, copy these 3 things to your Desktop:
+     content\            public\audio\            public\images\
+
+STEP 2 — SET UP THE NEW FOLDER
+  Extract riiris-studio.zip somewhere simple, e.g.  C:\dev\riiris-studio
+  (avoid OneDrive folders — they slow git down).
+  Copy your saved  content, public\audio, public\images  INTO the new folder,
+  choosing "Replace" when asked. (Skip this if you want the starter songs only.)
+
+STEP 3 — PUSH IT OVER THE OLD ONE   (VS Code terminal, inside riiris-studio)
+     git init
+     git branch -M main
+     git remote add origin https://github.com/thyrealmatty/riiris-studio.git
+     git add -A
+     git commit -m "riiris-studio v4: glass UI, scrapbook About, easy uploader"
+     git push -u origin main --force
+
+  "--force" replaces everything on GitHub with this new project. Netlify rebuilds by itself.
+  If "git remote add" says it already exists, run:  git remote set-url origin https://github.com/thyrealmatty/riiris-studio.git
+
+STEP 4 — CHECK
+  Netlify -> Deploys -> wait for "Published". Open your site and press Ctrl+Shift+R.
+  If an old version still shows: F12 -> Application -> Service workers -> Unregister, then Clear site data.
+  Admin login: https://YOUR-SITE.netlify.app/admin/  (same GitHub login as before — nothing to redo.)
+
+ADDING SONGS AFTER THAT
+  Drop MP3s in the  new-songs  folder -> double-click ADD-SONGS.bat. Done.

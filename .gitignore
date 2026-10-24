@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.env
+.netlify
+.vscode/*
+!.vscode/extensions.json
+
+new-songs/*
+!new-songs/README.txt
+!new-songs/.gitkeep

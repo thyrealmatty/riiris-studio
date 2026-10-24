@@ -1,0 +1,15 @@
+{
+  "title": "Rise Original",
+  "artist": "BabyRiiri",
+  "featuredArtists": [],
+  "album": "singles",
+  "artwork": "/images/rise-og.jpg",
+  "audioSrc": "/audio/rise-og.mp3",
+  "releaseDate": "19 July 2022",
+  "genre": "Pop",
+  "featured": false,
+  "newRelease": false,
+  "trending": true,
+  "description": "Rise is an inspirational, empowering anthem about overcoming obstacles, staying focused on your goals, and having faith in your potential.",
+  "order": 4
+}

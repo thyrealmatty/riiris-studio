@@ -1,0 +1,48 @@
+# Netlify build + deploy settings. Push to GitHub -> Netlify builds and publishes automatically.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Single-page app: any unknown path serves the app.
+# (Real files such as /admin/ and /audio/*.mp3 are served as-is, never rewritten.)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ---- security headers ----------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+
+# The admin panel is never indexed.
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
+# Hashed build assets can be cached forever.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The service worker must always be re-checked so updates ship quickly.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/audio/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+    Accept-Ranges = "bytes"

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>BabyRiiri Studio — Admin</title>
+    <style>
+      /* friendlier, lighter look for the editor */
+      :root { --brand: #8B7CF6; }
+      body { font-family: ui-rounded, 'Nunito', system-ui, sans-serif; }
+      button[class*='Button'], [class*='ToolbarButton'] { border-radius: 999px !important; }
+      [class*='PrimaryButton'], [class*='PublishButton'] { background: var(--brand) !important; }
+      [class*='Card'], [class*='ListCard'] { border-radius: 16px !important; transition: transform .2s, box-shadow .2s; }
+      [class*='Card']:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgba(139,124,246,.5) !important; }
+      * { scroll-behavior: smooth; }
+    </style>
+  </head>
+  <body>
+    <!-- Decap CMS: a login-gated editor. It reads /admin/config.yml. -->
+    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  </body>
+</html>
